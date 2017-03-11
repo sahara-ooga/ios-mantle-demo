@@ -97,3 +97,149 @@ $(SRCROOT)/Carthage/Build/iOS/Mantle.framework
     ], 
 }
 ```
+
+### クラス構成
+
+|クラス名|説明 |
+|---|---|
+| BookItemResults |最上位レベルのデータ型 |
+| BookItem |Items以下のデータ構造 |
+| Book |Item以下のデータ構造 |
+
+### MTLModelオブジェクトの作成
+
+#### BookItemResultsクラス
+
+```:BookItemResults.h
+#import <Foundation/Foundation.h>
+#import <Mantle/Mantle.h>
+#import "BookItem.h"
+
+@interface BookItemResults : MTLModel<MTLJSONSerializing>
+
+@property (nonatomic, readonly) NSInteger count;
+@property (nonatomic, readonly) NSInteger page;
+@property (nonatomic, readonly) NSInteger pageCount;
+@property (nonatomic, readonly) NSArray<BookItem*> *items;
+
+@end
+```
+
+配列のマッピングは、○○JSONTransformerメソッドを実装して、手動でマッピングする
+
+```
+#import "BookItemResults.h"
+
+@implementation BookItemResults
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{
+             @"count": @"count",
+             @"page": @"page",
+             @"pageCount": @"pageCount",
+             @"items": @"Items"
+             };
+}
+
+
+/// 配列をマッピング
++ (NSValueTransformer *)itemsJSONTransformer {
+    return [MTLJSONAdapter arrayTransformerWithModelClass:BookItem.class];
+}
+
+@end
+```
+
+#### BookItemクラス
+
+```
+#import <Foundation/Foundation.h>
+#import <Mantle/Mantle.h>
+#import "Book.h"
+
+@interface BookItem : MTLModel<MTLJSONSerializing>
+
+@property (nonatomic, strong) Book* item;
+
+@end
+```
+
+独自で作成したクラスも手動でマッピングする。
+
+```
+#import "BookItem.h"
+
+@implementation BookItem
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{
+             @"item": @"Item"
+             };
+}
+
++ (NSValueTransformer *)itemByJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:
+            ^id(NSDictionary *value, BOOL *success, NSError *__autoreleasing *error) {
+        
+        BookItem *book = [BookItem new];
+        book.item = value[@"Item"];
+        return book;
+    }];
+}
+
+@end
+```
+
+#### Bookクラス
+
+```
+#import <Foundation/Foundation.h>
+#import <Mantle/Mantle.h>
+
+@interface Book : MTLModel<MTLJSONSerializing>
+
+@property (nonatomic, readonly) NSString* title;
+@property (nonatomic, readonly) NSString* author;
+@property (nonatomic, readonly) NSString* itemCaption;
+@property (nonatomic, readonly) NSString* itemUrl;
+@property (nonatomic, readonly) NSString* mediumImageUrl;
+
+@end
+```
+
+```
+#import "Book.h"
+
+@implementation Book
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{
+             @"title": @"title",
+             @"author": @"author",
+             @"itemCaption": @"itemCaption",
+             @"itemUrl": @"itemUrl",
+             @"mediumImageUrl": @"mediumImageUrl"
+             };
+}
+
+
+@end
+```
+
+### 使い方(Usage)
+
+```
+
+    BookItemResults *result = [MTLJSONAdapter modelOfClass:BookItemResults.class
+                                              fromJSONDictionary:jsonDic
+                                                     error:nil];
+    NSLog(@"%zd", result.count);
+    NSLog(@"%zd", result.page);
+    NSLog(@"%zd", result.pageCount);
+    
+    NSLog(@"%@", result.items[0].item.title);
+    NSLog(@"%@", result.items[0].item.author);
+    NSLog(@"%@", result.items[0].item.itemCaption);
+```
+
+
