@@ -29,10 +29,16 @@
     
     NSError *error = nil;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"json"];
-    NSString *jsonString = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error: &error];
+    NSString *jsonString = [[NSString alloc] initWithContentsOfFile:path
+                                                           encoding:NSUTF8StringEncoding
+                                                              error: &error];
+    
     NSData *jsonData = [jsonString dataUsingEncoding:NSUnicodeStringEncoding];
     
-    NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+    NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                            options:0
+                                                              error:nil];
+    
     return jsonDic;
 }
 
