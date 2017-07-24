@@ -1,4 +1,5 @@
 # ios-mantle-demo
+Objective-C向けのマッピングのフレームワーク、mantleのサンプルです。
 
 ## Homebrewの導入
 
@@ -50,7 +51,7 @@ Target > General > Linked Frameworks and BinariesにFrameworkを追加する
 $(SRCROOT)/Carthage/Build/iOS/Mantle.framework
 
 
-## サンプル
+## JSONサンプル
 
 ```
 {
@@ -242,4 +243,5 @@ $(SRCROOT)/Carthage/Build/iOS/Mantle.framework
     NSLog(@"%@", result.items[0].item.itemCaption);
 ```
 
-
+## 参考
+[【Objective-C】MantleでJSONをマッピング](http://qiita.com/KentaKudo/items/3688a8be8262ed272c36)
