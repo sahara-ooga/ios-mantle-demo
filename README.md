@@ -1,5 +1,6 @@
 # ios-mantle-demo
 Objective-C向けのマッピングのフレームワーク、mantleのサンプルです。
+モデルとNSDictionaryの相互変換を簡素にします。
 
 ## Homebrewの導入
 
@@ -244,4 +245,10 @@ $(SRCROOT)/Carthage/Build/iOS/Mantle.framework
 ```
 
 ## 参考
-[【Objective-C】MantleでJSONをマッピング](http://qiita.com/KentaKudo/items/3688a8be8262ed272c36)
+- [【Objective-C】MantleでJSONをマッピング](http://qiita.com/KentaKudo/items/3688a8be8262ed272c36)
+
+- [モデルクラスとNSDictionaryとの相互変換を楽に行えるようにするライブラリMantleを試す](http://safx-dev.blogspot.jp/2013/12/nsdictionarymantle.html)
+
+- [Simplifying RESTful API Use and Data Persistence on iOS with Mantle and Realm](https://www.toptal.com/ios/simplifying-restful-api-use-and-data-persistence-on-ios-with-mantle-and-realm)
+
+- [Mantle: a Model Framework for Objective-C](https://github.com/blog/1299-mantle-a-model-framework-for-objective-c)
