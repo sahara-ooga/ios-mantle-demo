@@ -16,10 +16,14 @@
              };
 }
 
+//手動でのマッピング
 + (NSValueTransformer *)itemByJSONTransformer {
+    //NSDictionaryからオブジェクトが返るときの記述
     return [MTLValueTransformer transformerUsingForwardBlock:
-            ^id(NSDictionary *value, BOOL *success, NSError *__autoreleasing *error) {
+            ^id(NSDictionary *value, BOOL *success,
+                NSError *__autoreleasing *error) {
         
+                //NSDictionaryの値から、プロパティを生成
         BookItem *book = [BookItem new];
         book.item = value[@"Item"];
         return book;
